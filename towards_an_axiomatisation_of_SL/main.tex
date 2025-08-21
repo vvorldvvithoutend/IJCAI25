@@ -1,0 +1,158 @@
+\documentclass{article}
+\usepackage{a4wide}
+\usepackage{amsthm, amsmath, logicproof, stmaryrd, amssymb, amsfonts}
+\usepackage{multicol}
+\usepackage{tikz}
+\usepackage{macros}
+\usepackage{mathrsfs}
+\usetikzlibrary{shapes.misc, fit, decorations.pathreplacing,calligraphy,positioning} %for crossing-out arrows and rectangles around nodes
+\usepackage{float}
+
+\usepackage{soul}
+\usepackage{todonotes}
+\newcommand\rustam[1]{\todo[color=blue!30,size=\small,inline]{Rustam: #1}}
+\newcommand\davide[1]{\todo[color=green!30,size=\small,inline]{Davide: #1}}
+
+\theoremstyle{definition}
+\newtheorem{definition}{Definition}[section]
+\newtheorem{lemma}{Lemma}
+\newtheorem{theorem}{Theorem}
+\newtheorem{proposition}{Proposition}
+
+
+\allowdisplaybreaks
+
+\title{Let's axiomatise at least some fragment}
+
+\date{\today}
+
+\begin{document}
+\maketitle
+
+Given a finite, non-empty set $\Ag$ of \emph{agents}, and two countable disjoints sets $\V$ and $\Ap$ of, respectively, variables and atomic propositions (or atoms), formulae of Basic Strategy Logic ($\BSL$ for short) are inductively defined by the following grammar: 
+$$\varphi := p \mid \neg \varphi \mid \ (\varphi \land \varphi) \mid \prox \varphi \mid \assign a x \varphi \mid \exists x \varphi \mid \forall x \varphi $$
+
+\noindent where $p\in \Ap$, $a\in \Ag$ and $x\in \V$. 
+
+
+\begin{definition}
+      Given a formula $\varphi$, we define its set of free variables  and agents $\FV(\varphi)$ by the following cases: 
+
+    \begin{enumerate}
+        
+        \item If $\varphi\in \Ap$ then $\FV(\varphi)=\emptyset$; 
+        \item If $\varphi=\neg \varphi_1$ then $\FV(\varphi)=\FV(\varphi_1)$; 
+        \item If $\varphi=\varphi_1 \land \varphi_2$ then $\FV(\varphi)=\FV(\varphi_1)\cup \FV(\varphi_2)$; 
+        \item If $\varphi=\prox \varphi_1$ then $\FV(\varphi)=\FV(\varphi_1)\cup \Ag$;
+        
+        \item if $\varphi= Q x \varphi_1$ with $Q\in \set{\exists,\forall}$ then $\FV(\varphi)=\FV(\varphi_1)\setminus \set{x}$
+        \item if $\varphi=\assign{a}{x}\varphi_1$ then 
+        \begin{enumerate}
+            \item if $a\notin \FV(\varphi_1)$ then $\FV(\varphi)=\FV(\varphi_1)$;
+            \item else $\FV(\varphi)=\FV(\varphi_1)\setminus\set{a}$.
+        \end{enumerate}
+    \end{enumerate}
+\end{definition}
+
+
+\begin{definition}
+       Let $\varphi$ be a formula and $x$ and $y$ be two variables. We define the result of the \emph{capture avoiding substitution} of every occurrence of $x$ by $y$ in $\varphi$, written $\varphi[y/x]$, by the following clauses: 
+
+    $$\begin{array}{l@{\quad=\quad}l@{\qquad}l}
+        p[y/x] & p &\mbox{ for any $p\in \Ap$}\\
+       ( \circ\, \psi )[y/x] & \circ\, (\psi [y/x]) & \mbox{for $\circ\in \set{\neg,\prox}$} \\
+       (\theta\land  \psi)[y/x] & \theta[y/x]  \land \psi[y/x] & \\
+       (Q{x} \psi)[y/x] & Q{x}\psi\\
+       (  Qv \psi) [y/x] &  Qv \psi \quad  &\mbox{if $x \notin \FV(\psi)$}\\
+       (Qv \psi) [y/x] &  Qv (\psi [x/y]) & \mbox{if $x\in \FV(\psi)$}\\
+       (Qy \psi)[y/x] & Qz ((\psi[z/y])[y/x])) &\mbox{if $x\in \FV(\psi)$}\\
+       (\assign{a}{x} \psi)[y/x] & \assign{a}{y} \psi &\mbox{if $x\notin\FV{\psi}$} \\
+       (\assign{a}{x} \psi) [y/x] & \assign{a}{y}(\psi[y/x]) & \mbox{if $x\in \FV(\psi)$}\\
+       (\assign{a}{v} \psi) [y/x] & \assign{a}{v} \psi & \mbox{if $x\notin\FV(\psi)$}\\
+       (\assign{a}{v} \psi) [y/x] & \assign{a}{v} (\psi[y/x]) & \mbox{if $x\in \FV(\psi)$}
+    \end{array}$$
+
+    
+\end{definition}
+
+
+
+The semantics of $\BSL$ formulas is specified with respect to concurrent games structures (CGSs for short). Intuitively, a CGS is a labeled directed  graph that represents the possible evolution of a given Multi-Agent System with respect to simultaneous choices of actions of a group of (autonomous) agents. 
+Both states and edges are labeled by members of two disjoints alphabets. States are labeled by atomic propositions. These atomic propositions represent the properties that are true at a given state. Each edge is labeled by a tuple, and each member of a given tuple represents an action that is available for a given agent at the source state of the edge. 
+
+\begin{definition}
+Given a set $\Ag$ of agents, and a set $\Ap$ of atomic proposition, a CGS constructed over $\Ap$ and $\Ag$ is a tuple 
+$\mathcal{G}=\tuple{S, \Ac,T,\mathcal{L}}$ where: 
+\begin{itemize}
+    \item $S$ is a countable non-empty set of states;
+    \item $\mathsf{Ac}$ is a finite set of actions. We denote by $\mathcal{D}$ the set of tuples of actions whose length is $|\Ag|$
+    Elements of $\mathcal{D}$ will be called \emph{decisions}; 
+    \item   $T: S \times \mathcal{D} \to S$ is the transition function, mapping each pair $\tuple{s,d}$ composed of a state and a decision to a state $T(\tuple{s,d})$; 
+    \item finally $\mathcal{L}: S\to 2^{\Ap}$ is the labeling function, which specifies the set of atomic propositions that are true at a given state; 
+ \end{itemize}
+\end{definition}
+
+
+\begin{definition}
+    Given a CGS $\G$, an assignment over $\G$ is a map 
+     $\sigma : \V \cup \Ag \to \Ac$ sending each variable and each agent to  an action. If $\sigma$ is an assignment, $l\in \V \cup \Ag$ and $f\in \Ac$, we let $\sigma[f/l]$ denote the assignment $\sigma'$ such that $\sigma'(l')=\sigma(l')$ when $l'\neq l$ and $\sigma'(l)=f$. 
+ 
+\end{definition}
+
+
+\begin{definition}
+     Given a CGS $\G$, a state $s$, an assignment $\sigma$ and a formula $\varphi$, the satisfaction relation $\G,s,\sigma \models \varphi$ is defined by induction on the structure of $\varphi$: 
+
+
+
+
+
+Let $\Ag=\set{a_1,\ldots, a_n}$ be the set of agents. A binding prefix $\mathcal{B}$ is a sequence: 
+
+$$\mathcal{B}^A = \assign{a_1}{x_1}\cdots \assign{a_n}{x_n}$$
+
+where each $x_i$ is a variable. The set of formulas of Coalition Strategy Logic  is recursively defined by the following grammar
+
+$$\varphi:= p \mid \neg \varphi \mid \varphi \land \varphi \mid  \mathcal{B}^A \prox \varphi\mid \forall x \varphi $$
+
+
+The semantics of $\BSL$ formulas is specified with respect to concurrent games structures (CGSs for short). Intuitively, a CGS is a labeled directed  graph that represents the possible evolution of a given Multi-Agent System with respect to simultaneous choices of actions of a group of (autonomous) agents. 
+Both states and edges are labeled by members of two disjoints alphabets. States are labeled by atomic propositions. These atomic propositions represent the properties that are true at a given state. Each edge is labeled by a tuple, and each member of a given tuple represents an action that is available for a given agent at the source state of the edge. 
+
+\begin{definition}
+Given a set $\Ag$ of agents, and a set $\Ap$ of atomic proposition, a CGS constructed over $\Ap$ and $\Ag$ is a tuple 
+$\mathcal{G}=\tuple{S, \Ac,T,\mathcal{L}}$ where: 
+\begin{itemize}
+    \item $S$ is a countable non-empty set of states;
+    \item $\mathsf{Ac}$ is a finite set of actions. We denote by $\mathcal{D}$ the set of tuples of actions whose length is $|\Ag|$
+    Elements of $\mathcal{D}$ will be called \emph{decisions}; 
+    \item   $T: S \times \mathcal{D} \to S$ is the transition function, mapping each pair $\tuple{s,d}$ composed of a state and a decision to a state $T(\tuple{s,d})$; 
+    \item finally $\mathcal{L}: S\to 2^{\Ap}$ is the labeling function, which specifies the set of atomic propositions that are true at a given state; 
+ \end{itemize}
+\end{definition}
+
+
+\begin{definition}
+    Given a CGS $\G$, an assignment over $\G$ is a map 
+     $\sigma : \V \cup \Ag \to \Ac$ sending each variable and each agent to  an action. If $\sigma$ is an assignment, $l\in \V \cup \Ag$ and $f\in \Ac$, we let $\sigma[f/l]$ denote the assignment $\sigma'$ such that $\sigma'(l')=\sigma(l')$ when $l'\neq l$ and $\sigma'(l)=f$. 
+ 
+\end{definition}
+
+
+\begin{itemize}
+    \item $\G,s,\sigma \models p$ iff $p\in \mathcal{L}(s)$; 
+    \item $\G,s,\sigma \models \neg \psi$ iff it is not the case that $\G,s,\sigma \models \psi$ (denoted $\G,s,\sigma \not\models \psi)$; 
+    \item $\G,s,\sigma \models \theta \land\psi $ iff $\G,s,\sigma \models \theta$ and $\G,s,\sigma \models \psi$;
+    \item $\G,s,\sigma \models \assign{a_1}{x_1}\cdots \assign{a_n}{x_n} \ \prox \varphi $ iff $\G,s' , \sigma' \models \psi $ where $s'=T(s, \Pi_{a\in \Ag}\sigma'(a))$ and $\sigma'=\sigma'=\sigma[\sigma(x_i)/a_i]$; 
+    
+    \item $\G,s,\sigma \models \forall x \psi$ iff for every  action $\alpha\in \Ac$ we have that $\G,s,\sigma[\alpha/x] \models \psi$.
+    
+\end{itemize}
+    
+\end{definition}
+
+
+
+
+
+\end{document}

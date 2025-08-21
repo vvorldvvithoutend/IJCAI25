@@ -1,0 +1,44 @@
+\clearpage
+\appendix
+\section*{Resubmission Information}
+An earlier version of this paper was rejected from AAMAS 2025. Below, we attach the original AAMAS 2025 submission and anonymised reviews, as well as rebuttal and interactions with reviewers. 
+
+\subsection*{Cover Letter}
+Here, we highlight the main improvements of the current version over the AAMAS one, and point out how we addressed the AAMAS reviewers' comments and criticisms.
+
+\paragraph{Meta Review}
+The meta review suggests that our paper lacked three components.
+\begin{enumerate}
+    \item \textit{Comparison with Hennessy-Milner ($\mathsf{HM}$) and $\mathsf{STIT}$}. Hennessy-Milner logic is a fragment of the standard multi-modal logic $\mathsf{K}$, where instead of propositional variables in the language we have only constants $\top$ and $\bot$. Hence, we believe, that there is no particularly exciting comparison to make, apart from noting that $\CSL$ is trivially strictly more expressive than $\mathsf{HM}$ and $\mathsf{K}$ when defined on serial and functional frames. We, however, add a sentence on Lines 155--158.
+
+    Regarding $\mathsf{STIT}$ logics, the situation is a bit more interesting.  We acknowledge the input by \textit{Reviewer GdYF} that it will be interesting to compare expressivities of $\CSL$ and various $\mathsf{STIT}$'s (in particular \textit{Group} $\mathsf{STIT}$). This, however, would require quite a bit of additional space, which, unfortunately, we do not have. We deem it more urgent to situate $\CSL$ among other Coalition Logics as most closely related formalisms. We put, however, the relationship with $\mathsf{STIT}$ as future work in Section 6, and we will deal with this research question either in a different paper or the extended version of the current paper. \textit{Reviewer GdYF} also mentions that a possible translation from Group $\mathsf{STIT}$ to $\CSL$ (if there is such a translation) would give us the undecidability of $\CSL$ for free. This is also very interesting to check, but it should be done as a part of the general $\CSL$ vs. $\mathsf{STIT}$ exploration. In our current submission, we establish the undecidability via different means that turned out to be quite exciting for the field (see below). 
+
+    \item \textit{Low significance}. We firmly believe  that our work is significant to the communities of IJCAI that work on \textit{logics for multi-agent systems (MAS)} and \textit{reasoning about actions in MAS}. And, there are three strong arguments for this (also stated in the Introduction and Discussion sections of the current submission). First, $\CSL$ is quite an expressive coalition logic that subsumes other notable coalition logics (Section 3). Secondly, being a variation of the next-time fragment of Strategy Logic ($\mathsf{SL}$), $\CSL$, to the best of our knowledge, \textit{is the first axiomatisation of any $\mathsf{SL}$} (Section 4). This is significant, as $\mathsf{SL}$ in its present form was first introduced in 2010 in the foundational paper \cite{mogavero10}, and axiomatisations of \textit{any} $\mathsf{SL}$'s has been an open question since. Thirdly, as we state in the undecidability part of the paper (Section 5), we have discovered a gap in the proof of $\Sigma^1_1$-hardness of $\mathsf{SL}$ in \cite{mogavero10} (the gap was acknowledged and corroborated by the authors of \cite{mogavero10} in personal communication). Hence, we reopened the question of recursive axiomatisability of $\mathsf{SL}$, that was assumed to be not recursively axiomatisable since the publication of the original $\mathsf{SL}$ paper in 2010.  
+
+    \item \textit{Low readability}. We corrected typos in the current submission and tidied up the text to improve the readability. 
+\end{enumerate}
+
+\paragraph{Reviewer NH82}
+Regarding $\mathsf{HM}$, see point 1 under Meta Review.
+
+Now we explicitly say that we mean \textit{alternating} bisimulation in Footnote 3.
+
+We added a paragraph about possible practical applications (verification of blockchain smart contracts) on Lines 187--200.
+
+Regarding extending the language with $\mathsf{LTL}$, we have this as future work (Section 6). Also see the rebuttal to the reviewer.
+
+Regarding the point about extending the framework to include imperfect information, we deem this to be way beyond the scope of the current paper. We mention this, however, as future work in Section 6.
+
+When it comes to significance, see our point 2 under Meta Review.
+
+\paragraph{Reviewer GdYF}
+\textit{On `strategies'.} The reviewer was not happy with the previous name of our logic, which was \textit{Coalition Strategy Logic}. After exhanging some arguments (see the rebuttal) and pointing out that single-step strategies are considered to be strategies in various works on coalition logic, as well as some works on $\mathsf{STIT}$ (see, e.g., \cite{broersen15}), the reviewer was not convinced. Thus, we decided to change the name of our logic to \textit{first-order coalition logic} ($\CSL$). Moreover, throughout the current version of the paper, we are careful to point out that $\CSL$ is a variant of \textit{the next-time fragment} of $\mathsf{SL}$. Finally, we point out that $\CSL$ still has the defining features of $\mathsf{SL}$, namely arbtirary quantification prefixes and strategy sharing.
+
+\textit{Definition of the language.} As promised in the rebuttal, we add clarification (Remark \ref{remark:open}) after Definition \ref{def:satopen}. 
+
+\textit{On $\mathsf{STIT}$.} See point 1 under Meta Review. Yet again, we agree that a full-fledged comparison with various $\mathsf{STIT}$ logics would be interesting. However, this is a bit outside of the scope of the current submission, and we highlight it as a future research direction in Section 6. We would also like to reiterate that we still have quite an extended comparison of $\CSL$ with other coalition logics from the literature. 
+
+
+\paragraph{Reviewer PStS}
+Now we have the undecidability of the satisfiability problem for $\CSL$ (Section 5).
+

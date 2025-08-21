@@ -1,0 +1,124 @@
+Reviewer NH82
+
+Response: We thank the reviewer for their suggestions. 
+
+It is indeed an extension of multi-modal K logic (Hennessy-Milner logic) in which the frames are serial and functional with first-order quantifiers over components of the arrow labels (actions). This increases the expressivity of the logic dramatically compared to the standard multi-modal K. We will add a note specifying this fact. 
+
+Q1  Is there another definition of countable?
+
+A1 No, but it has happened to us before that “countable” was understood by the reader as “infinitely countable” and we preferred to clarify this point. 
+
+Q2 p. 3, footnote: these systems are not bisimilar according to Milner's original definition of bisimulation. They are bisimilar only wrt a particular notion of bisimulation defined for a particular logic, presumably without actions, but the original (and I would argue most general) definition of bisimulation includes action labels. It is important to be precise about what definition of bisimulation you are using, especially since the one you reference in the footnote would not be the appropriate notion of bisimulation for the logic you define here.
+
+A2 We mean here 'alternating bisimulation', defined in [3] of the submission. We will clarify this fact in the final version of the paper. 
+
+Q3 My guess is that it will be difficult to find an axiomatization for the logic if it is extended with more LTL operators.
+
+A3 We conjecture that if the LTL connectives are always preceded by the strategic assignment operator (as in e.g. ATL), the axiomatization (and the completeness proof) would be non-trivial, but still feasible (Following, perhaps, the ideas from the ATL completeness proof). 
+
+%i.e. the syntax would be:  
+
+ %phi := booleans  | forall x phi | (t_1,...tn ) psi
+ %psi := Xphi | phi U phi | phi R phi 
+
+ %with (t_1,...,tn) X phi being equivalent to the actual (t_1,...,t_n) phi.
+
+ Q4 Extending the logic to imperfect-information systems would also be of interest.
+
+ A4 We agree with this, but, as it always with various logics for strategic reasoning, having imperfect information makes the resulting logics considerably more complex (regarding axiomatisations, model checking, and satisfiability). 
+
+ Q5 On the Next-time
+ 
+ A5 We choose this fragment as it allows us to isolate one of the features of strategy logic, namely arbitrary quantifier alternation, and thus prove the completeness of CSL, which is the first completeness proof of *any* strategy logic. In the future, we aim to extend the language of CSL with other temporal modalities, and try to establish the completeness of the resulting logic. Moreover, even as a coalition logic, as we show in the paper, CSL is quite interesting in the sense that it is strictly more expressive than other coalition logics in the literature. 
+
+
+ R2
+Q1) I do not see in which sense CSL should be called a “strategy logic”. An essential feature of SL is the possibility of reasoning about agents’ strategies and their effects. This feature is removed altogether from CSL. In CSL, one can only reason about agents’ actions and their effects in the next state. From this point of view, it is conceptually misleading to use the term "strategy" to talk about the logic presented in the paper.
+
+We argue that CSL qualifies as a (sublogic of) strategy logic. The defining feature of SL is the quantification over agents' strategies, and strategies for the Next-time operator are still strategies within this framework. Furthermore, CSL retains key characteristics of SL, such as strategy sharing, allowing it to express properties beyond the scope of CL, which is effectively the Next-time fragment of ATL. Additionally, observe that the term "strategy" has been consistently used in foundational works on coalition logic, such as Pauly's paper (see [32] in our submission), as well as in subsequent studies (e.g., Goranko, Jamroga, and Turrini 2013; Turrini and Ågotnes 2023). This aligns with the terminology in game theory literature, where "strategy" (e.g., Osborne and Rubinstein) is often understood in the same way it is employed in our paper. Therefore, we believe that our use of the term is both accurate and consistent with established usage in the field.
+
+We agree that having a richer temporal language and quantification over (memoryless) strategies is interesting. However, in this case we will end up, essentially, with second-order quantification, and hence the chances are that the resulting logic will not be recursively axiomatisable (but it still may have an infinatary axiomatisation). This problem is highly non-trivial, and in this submission we focus on arbitrary quantifier alternation, which leads us to the first (to the best of our knowledge) axiomatisation of *any* strategy logic. We leave as future work extending the logic with other temporal operators and providing its axiomatisation, or demonstrating the lack thereof, for the future.
+
+Q2) There is a mismatch between the definition of the language on page 1 (right column, Section 2) and the definition of the satisfaction relation on page 2 (Definition 2.6, left column, Section 2). In the definition of the language the authors introduce the construct ((t_1…t_k))phi as a primitive, where t_1,…,t_k are arbitrary terms and a term is either a constant in the set of constants C or a variable in the set of variables V. But the satisfaction relation (Definition 2.6) is only defined for sentences (formulas with no free variables). Only the case ((a_1…a_n))phi is treated, where a_1,…,a_k are arbitrary actions which are assimilated to constants (in Definition 2.5 it is assumed that the set of actions Ac and the set of constants C coincide). The case for the construct ((t_1…t_k))phi in which some terms in {t_1,…,t_k} are variables is not treated. So, something is missing either at the language level or at the model-theoretic level. Specifically, either the authors should explicitly define the grammar of the "no free variable" fragment of the language defined on page 1 they consider, or they should extend the definition of the satisfaction relation for formulas to cover formulas with free variables. In the latter case an assignment function mapping variables to actions should be added to the semantic interpretation of formulas (i.e., formulas should be evaluated wrt to a CGS, a state and an assignment function as usually done in SL).
+
+
+A2) We chose to define the truth of formulas solely for closed formulas. It should be noted that the truth of open formulas is reduced to the truth of closed formulas through the notion of closure a formula (Definitions 2.7 and 2.8). Thus, the semantics of the whole logic is properly defined. 
+This approach is fairly standard in the semantics of first-order logic (e.g., Van Dalen's book "Logic and Strucure" follows this approach). We could define the notion of truth of a formula with respect to an assignment, but this would not change anything to our results. We simply believe that our choice simplifies the formal machinery of the paper and makes it more readable.  We will clarify this in the final version of the paper
+
+Q3 STIT
+
+A3 Thank you for pointing out the research on STIT logics! We believe that your formula for Stackelberg equilibrium expressed in Chellas-group-STIT should work. The main difference from CSL though, is that, following SL, explicit quantification over strategies (or actions) allows for more nuanced expressions, where, e.g., different agents use *the same* strategy (e.g. $\exists x ((x,x))\varphi$). Moreover, it should be noted that our modalitity is not an S5 modality, but rather KD! (! stands functionality) modalitiy.
+
+We are also aware that there is a translation of CL to discrete deterministic STIT (Broersen, Herzig, Troquard 2006), as well as into the Chellas-STIT with next-time (Broersen, Herzig, Troquard 2007). For this increased expressivity we have to pay in complexity, with SAT for Chellas-STIT with next-time being undecidable (Herzig, Schwarzentruber 2008), compared to the PSPACE-Completeness of CL-SAT. We will add (an extended version of) this discussion in the paper with all the appropriate references. 
+
+R3 Thank you for your review! Indeed, we leave the satisfiability problem for future work due to strict page limit of AAMAS. 
+
+
+
+
+
+Thank you for your review!
+Q1 'I do not see in which sense CSL should be called a “strategy logic”.'
+
+We argue that CSL qualifies as a (variant of) strategy logic. The defining feature of SL is the quantification over agents' strategies, and strategies for the Next-time operator are still strategies within this framework. Furthermore, CSL retains key characteristics of SL, such as strategy sharing, allowing it to express properties beyond the scope of CL, which is effectively the Next-time fragment of ATL. Additionally, observe that the term "strategy" has been consistently used in foundational works on CL, such as Pauly's paper (see [32] in our submission), as well as in subsequent studies (e.g., Goranko, Jamroga, and Turrini 2013; Turrini and Ågotnes 2023). This aligns with the terminology in game theory literature, where "strategy" (e.g., Osborne and Rubinstein) is often understood in the same way it is employed in our paper. Therefore, we believe that our use of the term is both accurate and consistent with established usage in the field.
+
+We agree that having a richer temporal language and quantification over strategies is interesting. However, in this case we will end up, essentially, with second-order quantification, and hence we suspect that the resulting logic will not be recursively axiomatisable. This problem is highly non-trivial and we leave it for future work. In this submission we focus on arbitrary quantifier alternation, which leads us to the first axiomatisation of *any* strategy logic. 
+
+Q2 There is a mismatch between the definition of the language ...
+
+A2 We define the truth of formulas solely for closed formulas. The truth of open formulas is reduced to the truth of the closed ones via the notion of closure a formula (Definitions 2.7 and 2.8). Thus, the semantics of the whole logic is properly defined.  This approach is fairly standard in the semantics of first-order logic (e.g., Van Dalen's book "Logic and Strucure"). We could define the notion of truth of a formula with respect to an assignment, but this would not change our results. Our choice simplifies the formal machinery of the paper and makes it more readable.  We will clarify this in the final version of the paper.
+
+Q3 STIT
+
+A3 Thank you for pointing out the research on STIT logics! We believe that your formula for Stackelberg equilibrium should work. The main difference from CSL though, is that explicit quantification over strategies (or actions) allows for more nuanced expressions, where, e.g., different agents use *the same* strategy (e.g. $\exists x ((x,x))\varphi$). Moreover, it should be noted that our modalitity is not an S5 modality, but rather KD! (! stands functionality) modalitiy.
+
+We are also aware of the translation of CL into discrete deterministic STIT (Broersen, Herzig, Troquard 2006), as well as into the Chellas-STIT with next-time (Broersen, Herzig, Troquard 2007). This increased expressivity leads to the increase in complexity, with SAT for Chellas-STIT with next-time being undecidable (Herzig, Schwarzentruber 2008). We will add (an extended version of) this discussion in the paper with all the appropriate references. 
+
+
+-----Comment from the STIT reviewer----------
+
+Comment:
+Thanks for clarifying Q2. As for Q1 and Q2 I'm still not convinced. Let me explain why.
+
+Q1. The essential aspect of a strategy in the SL and ATL sense is the fact of anticipating what an agent will do at every state in a CGS (memoryless strategy) or at end of every trace in the CGS (perfect recall strategy). This aspect is absent in CSL.
+
+Q3 I find authors' reply not to the point. I strongly suspect that the group STIT logic of Horty's (Horty, 2001), namely, the STIT logic including the group (Chellas stit) agency modalities of the form [C] with C a coalition of agents can be polynomially embedded in the CSL logic presented in the paper. As the authors correctly argue, given the explicit quantification over actions, CSL allows for more nuanced expressions than STIT. I think the following translation from group STIT to CSL should be satisfiability preserving, under the assumption that the set of agents is AGT={1,...,n}:
+
+
+
+
+
+where  are arbitrary fixed action constants,  and for every , we have  if  and  otherwise. If my conjecture is true, then the logic CSL is undecidable since, as shown in (Herzig & Schwarzentruber, 2008), the group STIT logic is undecidable. Some decidable fragments of group STIT logic are studied in (Lorini & Schwarzentruber, 2011).
+
+There are non trivial issues like the previous ones about the connection between CSL and group stit logic and about the decidability of CSL (in relation to the known undecidability of full group STIT logic and the decidability of some of its fragments) that are simply ignored in the paper.
+
+References:
+
+A. Herzig and F. Schwarzentruber. Properties of logics of individual and group agency. In Proc. of Advances in Modal Logic 2008, pages 133–149. College Publ., 2008.
+E. Lorini and F. Schwarzentruber. A logic for reasoning about counterfactual emotions. Artificial Intelligence, 175, 3-4, 2011.
+J. Horty. Agency and Deontic Logic. OUP, 2001.
+
+
+Hi Nello! I wrote a possible answer. You can edit as you like! I'll go home and check it at home again if necessary. 
+Thanks. I will think about it and edit if needed. I will do it in 1h from now.
+
+Thank you (:
+
+you are welcome ^.^
+
+I think the reviewer wants to say that our definition of strategy is not a conditional plan, as it is in strategy logic.... can we have a chat about it?
+Fine, let us post your reply.
+
+----Answer-----
+Q1. 
+
+We believe that an essential aspect of Strategy Logic is to quantify over strategies treated as first order objects. This is exactly what we do in our paper and in a similar way as it has been done in the original Strategy Logic paper. Strategies in Strategy Logic work as placeholders (which is a key feature of Strategy Logic), in other words, one can define Strategy Logic by using different strategy definitions, including the "one-step" one we consider in our paper, which we agree is different from the one used in ATL and the original work introducing SL. Clearly, the strategy definition affects the expressiveness of the logic, which we are aware of and not hiding in our paper. Notice however that we fully capture essential properties of SL, like the ability to refer to particular strategies through variables and arbitrary quantification prefixes. In this sense, CSL to CL is what SL to ATL*. As we mentioned before, we suspect that quantifying over ATL-like strategies will lead to a logic lacking recursive axiomatisation. In this work, we provide an axiomatisation of an SL. This, in conjunction with the fact that the whole SL is highly undecidable ($\Sigma^1_1$-hard), and thus not recursively axiomatisable, establishes the two borderline cases when it comes to axiomatisability. We leave it for future work to explore the existence of recursive axiomatisations of logics 'in between' CSL and SL. 
+ 
+
+
+
+
+Notice that ... shaped specifically for the core coalition logic we wanted to deal with, but this do not prevent us to 
+
+Q2. Thank you for the interesting discussion on the relationship of CSL and STIT. We will add some highlights of it in the final version with the recommended references. In the future, we are excited to investigate embeddings of various STIT logics into CSL.
+In this paper, our goal was to provide a complete axiomatisation of a (variant of) strategy logic. Observe that providing a complete axiomatisation of *any* SL has been an open problem since the inception of the logic. 
